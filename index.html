@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:120px;
+  font-family:'Cormorant Garamond',serif;
+}
+
+.clock{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.separator{
+  font-size:40px;
+  color:#B08D57;
+}
+
+.flip{
+  position:relative;
+  width:70px;
+  height:90px;
+  perspective:1000px;
+}
+
+.card{
+  position:absolute;
+  width:100%;
+  height:100%;
+  border:1px solid #d8c29d;
+  border-radius:12px;
+  background:#fff;
+  box-shadow:0 4px 12px rgba(176,141,87,.15);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:52px;
+  color:#B08D57;
+  backface-visibility:hidden;
+}
+
+.flip-animation{
+  animation:flip .6s ease;
+}
+
+@keyframes flip{
+  0%{
+    transform:rotateX(0deg);
+  }
+  50%{
+    transform:rotateX(-90deg);
+  }
+  100%{
+    transform:rotateX(0deg);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="clock">
+  <div class="flip"><div class="card" id="h1">0</div></div>
+  <div class="flip"><div class="card" id="h2">0</div></div>
+
+  <div class="separator">:</div>
+
+  <div class="flip"><div class="card" id="m1">0</div></div>
+  <div class="flip"><div class="card" id="m2">0</div></div>
+
+  <div class="separator">:</div>
+
+  <div class="flip"><div class="card" id="s1">0</div></div>
+  <div class="flip"><div class="card" id="s2">0</div></div>
+</div>
+
+<script>
+function flipDigit(id,newValue){
+
+  const el=document.getElementById(id);
+
+  if(el.textContent!==newValue){
+
+    el.classList.remove("flip-animation");
+    void el.offsetWidth;
+
+    el.classList.add("flip-animation");
+    el.textContent=newValue;
+  }
+}
+
+function updateClock(){
+
+  const now=new Date();
+
+  const h=String(now.getHours()).padStart(2,'0');
+  const m=String(now.getMinutes()).padStart(2,'0');
+  const s=String(now.getSeconds()).padStart(2,'0');
+
+  flipDigit("h1",h[0]);
+  flipDigit("h2",h[1]);
+
+  flipDigit("m1",m[0]);
+  flipDigit("m2",m[1]);
+
+  flipDigit("s1",s[0]);
+  flipDigit("s2",s[1]);
+}
+
+updateClock();
+setInterval(updateClock,1000);
+</script>
+
+</body>
+</html>
